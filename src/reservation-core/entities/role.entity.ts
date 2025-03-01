@@ -5,6 +5,7 @@ import { User } from './user.entity';
 export class Role {
   @PrimaryGeneratedColumn()
   id: number;
+  title_role: string;
   @ManyToOne(() => User)
   user: User;
 }

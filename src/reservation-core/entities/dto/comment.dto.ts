@@ -1,9 +1,7 @@
-export interface UpdateCommentDto {
-  id: number;
+export interface CommentDto {
   content: string;
-  rate: number;
+  rate?: number;
   localDateTime: Date;
   reservationId: number;
+  headquarterId: number;
 }
-
-export type CreateCommentDto = Omit<UpdateCommentDto, 'id'>;

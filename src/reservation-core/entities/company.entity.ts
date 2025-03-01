@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { IsDate, IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsEmail, IsOptional, IsString } from 'class-validator';
 
 @Entity({ schema: 'reservation_schema', name: 'companies' })
 export class Company {
@@ -36,4 +36,7 @@ export class Company {
   @IsString()
   @IsOptional()
   logoUrl?: string;
+  @Column({ nullable: false })
+  @IsBoolean()
+  active: boolean;
 }

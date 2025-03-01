@@ -12,7 +12,7 @@ export class DayOfWeek {
   dayName: string;
   @Column({ type: 'int' })
   @IsNumber()
-  dayNumber: string;
+  dayNumber: number;
   @Column()
   @IsBoolean()
   active: boolean;

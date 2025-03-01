@@ -1,9 +1,6 @@
-export interface UpdateDayOfWeekDto {
-  id: number;
+export interface DayOfWeekDto {
   dayName: string;
   dayNumber: number;
   active: boolean;
   headquarterId: number;
 }
-
-export type CreateDayOfWeekDto = Omit<UpdateDayOfWeekDto, 'id'>;

@@ -1,22 +1,24 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
-  CreateUserDto,
   RecoverUserDto,
   ResetPasswordDto,
+  UserDto,
   VerifyOtpDto,
 } from '../../entities/dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from '../user/user.repository';
 import { OtpService } from '../../infrastructure/otp.service';
+import { ImageService } from '../../infrastructure/image.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
-    private otpService: OtpService,
+    private readonly otpService: OtpService,
+    private readonly imageService: ImageService,
   ) {}
 
-  async register(dto: CreateUserDto) {
+  async register(dto: UserDto) {
     const emailExists = await this.userRepository.existsByEmail(dto.email);
     if (emailExists) {
       throw new BadRequestException('Email is already in use');
@@ -29,6 +31,10 @@ export class AuthService {
     });
 
     return this.userRepository.save(user);
+  }
+
+  async saveImage() {
+
   }
 
   async validateUser(email: string, password: string) {

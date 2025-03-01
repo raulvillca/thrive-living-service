@@ -1,10 +1,7 @@
-export interface UpdateTimeGridDto {
-  id: number;
+export interface TimeGridDto {
   initialTime: string;
   endTime: string;
   active: boolean;
   headquarterId: number;
   dayOfWeekId: number;
 }
-
-export type CreateTimeGridDto = Omit<UpdateTimeGridDto, 'id'>;

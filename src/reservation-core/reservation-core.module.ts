@@ -6,6 +6,7 @@ import { MeetingModule } from './modules/meeting/meeting.module';
 import { ReservationModule } from './modules/reservation/reservation.module';
 import { ScheduleTableModule } from './modules/schedule-table/schedule-table.module';
 import { ConfigModule } from '@nestjs/config';
+import { ImageService } from './infrastructure/image.service';
 
 @Module({
   exports: [
@@ -17,5 +18,6 @@ import { ConfigModule } from '@nestjs/config';
     ScheduleTableModule,
   ],
   imports: [ConfigModule.forRoot()],
+  providers: [ImageService],
 })
 export class ReservationCoreModule {}

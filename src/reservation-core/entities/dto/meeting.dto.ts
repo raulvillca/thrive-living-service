@@ -1,10 +1,8 @@
-export interface UpdateMeetingDto {
-  id: number;
+export interface MeetingDto {
   placeType: string;
   place: string;
   activityId: number;
   timeGridId: number;
   meetingCalendarId: number;
+  moderatorIds: number[];
 }
-
-export type CreateMeetingDto = Omit<UpdateMeetingDto, 'id'>;

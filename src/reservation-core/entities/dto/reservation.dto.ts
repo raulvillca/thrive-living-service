@@ -1,12 +1,7 @@
-export interface UpdateReservationDto {
-  id: number;
+export interface ReservationDto {
   clientId: number;
   attended: boolean;
-  fromDate: Date;
-  createdAt: Date;
   headquarterId: number;
   meetingId: number;
-  comments: [];
+  meetingCalendarId: number;
 }
-
-export type CreateReservationDto = Omit<UpdateReservationDto, 'id'>;

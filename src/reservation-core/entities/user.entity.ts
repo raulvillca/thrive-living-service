@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
 import { Role } from './role.entity';
+import { Headquarter } from './headquarter.entity';
 
 @Entity({ schema: 'reservation_schema', name: 'users' })
 export class User {
@@ -43,6 +44,8 @@ export class User {
   @Column({ default: false })
   @IsBoolean()
   frequent: boolean;
+  @ManyToOne(() => Headquarter)
+  headquarter: Headquarter;
   @ManyToOne(() => Role)
   role: Role;
 }

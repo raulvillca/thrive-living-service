@@ -1,5 +1,4 @@
-export interface UpdateCompanyDto {
-  id: number;
+export interface CompanyDto {
   initialDate?: Date;
   phone: string;
   description: string;
@@ -7,5 +6,3 @@ export interface UpdateCompanyDto {
   imageUrl?: string;
   logoUrl?: string;
 }
-
-export type CreateCompanyDto = Omit<UpdateCompanyDto, 'id'>;

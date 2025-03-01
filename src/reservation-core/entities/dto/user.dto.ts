@@ -1,14 +1,31 @@
-export interface UpdateUserDto {
-  id: number;
+export interface UserDto {
   name: string;
   surname: string;
+  birthdate: string;
   email: string;
   password: string;
   age: string;
+  observation?: string;
+  phone?: string;
+  goal?: string;
+  roleId?: number;
 }
 
-export type CreateUserDto = Omit<UpdateUserDto, 'id'>;
-export type LoginUserDto = Omit<CreateUserDto, 'name' | 'surname' | 'age'>;
+export type LoginJWTDto = {
+  accessType: string;
+  accessToken: string;
+  exp: number;
+};
+
+export type UserResponseDto = Omit<UserDto, 'password' | 'roleId'> & {
+  startingDate: Date;
+  imageUrl?: string;
+  active: boolean;
+  frequent: boolean;
+  role: string;
+};
+
+export type LoginUserDto = Omit<UserDto, 'name' | 'surname' | 'age' | 'roleId'>;
 export type RecoverUserDto = Omit<LoginUserDto, 'password'>;
 export type ResetPasswordDto = LoginUserDto & {
   newPassword: string;

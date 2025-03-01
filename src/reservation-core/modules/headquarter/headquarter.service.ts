@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   CreateHeadquarterDto,
   UpdateHeadquarterDto,
@@ -22,20 +22,9 @@ export class HeadquarterService {
     const company = await this.companyRepository.findById(
       createHeadquarterDto.companyId,
     );
-    if (!company) {
-      throw new NotFoundException(
-        `Company with id ${createHeadquarterDto.companyId} not found`,
-      );
-    }
-
     const supervisor = await this.roleRepository.findById(
       createHeadquarterDto.supervisorId,
     );
-    if (!supervisor) {
-      throw new NotFoundException(
-        `Supervisor with id ${createHeadquarterDto.supervisorId} not found`,
-      );
-    }
 
     const headquarter = new Headquarter();
     headquarter.active = true;
@@ -45,9 +34,20 @@ export class HeadquarterService {
     return this.headquarterRepository.save(headquarter);
   }
 
-  update(id: number, updateHeadquarterDto: UpdateHeadquarterDto) {
+  async update(id: number, updateHeadquarterDto: UpdateHeadquarterDto) {
+    const { companyId, supervisorId, ...headquarterData } =
+      updateHeadquarterDto;
+    const company = await this.companyRepository.findById(companyId);
+    const supervisor = await this.roleRepository.findById(supervisorId);
+    const headquarter = await this.headquarterRepository.findById(id);
 
-    return `This action updates a #${id} headquarter`;
+    const updatedHeadquarter = {
+      ...headquarter,
+      ...headquarterData,
+      company,
+      supervisor,
+    } as Headquarter;
+    return this.headquarterRepository.save(updatedHeadquarter);
   }
 
   remove(id: number) {
