@@ -1,42 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import {
-  CreateHeadquarterDto,
-  UpdateHeadquarterDto,
-} from '../../entities/dto/headquarter.dto';
 import { HeadquarterRepository } from './headquarter.repository';
 import { CompanyRepository } from '../company/company.repository';
-import { UserRepository } from '../user/user.repository';
 import { Headquarter } from '../../entities/headquarter.entity';
 import { RoleRepository } from '../user/role.repository';
+import { HeadquarterDto } from '../../entities/dto/headquarter.dto';
 
 @Injectable()
 export class HeadquarterService {
   constructor(
     private readonly headquarterRepository: HeadquarterRepository,
     private readonly companyRepository: CompanyRepository,
-    private readonly userRepository: UserRepository,
     private readonly roleRepository: RoleRepository,
   ) {}
 
-  async create(createHeadquarterDto: CreateHeadquarterDto) {
-    const company = await this.companyRepository.findById(
-      createHeadquarterDto.companyId,
-    );
-    const supervisor = await this.roleRepository.findById(
-      createHeadquarterDto.supervisorId,
-    );
+  async create(headquarterDto: HeadquarterDto) {
+    const { companyId, supervisorId, ...headquarterData } = headquarterDto;
+    const company = await this.companyRepository.findById(companyId);
+    const supervisor = await this.roleRepository.findById(supervisorId);
 
-    const headquarter = new Headquarter();
-    headquarter.active = true;
-    headquarter.location = createHeadquarterDto.location;
-    headquarter.company = company;
-    headquarter.supervisor = supervisor;
+    const headquarter = this.headquarterRepository.create({
+      supervisor,
+      company,
+      active: true,
+      location: headquarterData.location,
+    });
     return this.headquarterRepository.save(headquarter);
   }
 
-  async update(id: number, updateHeadquarterDto: UpdateHeadquarterDto) {
-    const { companyId, supervisorId, ...headquarterData } =
-      updateHeadquarterDto;
+  async update(id: number, headquarterDto: HeadquarterDto) {
+    const { companyId, supervisorId, ...headquarterData } = headquarterDto;
     const company = await this.companyRepository.findById(companyId);
     const supervisor = await this.roleRepository.findById(supervisorId);
     const headquarter = await this.headquarterRepository.findById(id);
@@ -50,7 +42,8 @@ export class HeadquarterService {
     return this.headquarterRepository.save(updatedHeadquarter);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} headquarter`;
+  async remove(id: number) {
+    const headquarter = await this.headquarterRepository.findById(id);
+    await this.headquarterRepository.remove(headquarter);
   }
 }

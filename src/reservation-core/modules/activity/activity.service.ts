@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  CreateActivityDto,
-  UpdateActivityDto,
-} from '../../entities/dto/activity.dto';
+import { ActivityDto } from '../../entities/dto/activity.dto';
 import { ActivityRepository } from './activity.repository';
 import { Activity } from '../../entities/activity.entity';
 import { HeadquarterRepository } from '../headquarter/headquarter.repository';
@@ -13,8 +10,8 @@ export class ActivityService {
     private readonly activityRepository: ActivityRepository,
     private readonly headquarterRepository: HeadquarterRepository,
   ) {}
-  async create(createActivityDto: CreateActivityDto): Promise<Activity> {
-    const { headquarterId, ...activityData } = createActivityDto;
+  async create(activityDto: ActivityDto): Promise<Activity> {
+    const { headquarterId, ...activityData } = activityDto;
     const headquarter =
       await this.headquarterRepository.findById(headquarterId);
 
@@ -33,18 +30,17 @@ export class ActivityService {
     return `This action returns a #${id} activity`;
   }
 
-  async update(id: number, updateActivityDto: UpdateActivityDto) {
-    const { headquarterId, ...activityData } = updateActivityDto;
+  async update(id: number, activityDto: ActivityDto) {
+    const { headquarterId, ...activityData } = activityDto;
     const headquarter =
       await this.headquarterRepository.findById(headquarterId);
     const activity = await this.activityRepository.findById(id, headquarterId);
-    activity.headquarter = headquarter;
-    activity.everyWeek = activityData.everyWeek;
-    activity.description = activityData.description;
-    activity.active = activityData.active;
-    activity.name = activityData.name;
-    activity.quantity = activityData.quantity;
-    return this.activityRepository.save(activity);
+    const updatedActivity = {
+      ...activity,
+      ...activityData,
+      headquarter,
+    } as Activity;
+    return this.activityRepository.save(updatedActivity);
   }
 
   async remove(id: number, headquarterId: number) {

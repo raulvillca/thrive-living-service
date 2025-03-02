@@ -1,6 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
-import { Role } from './role.entity';
 import { Headquarter } from './headquarter.entity';
 
 @Entity({ schema: 'reservation_schema', name: 'users' })
@@ -38,7 +37,16 @@ export class User {
   phone?: string;
   @Column({ nullable: true })
   @IsOptional()
-  firebaseToken?: string;
+  notificationToken?: string;
+  @Column()
+  @IsOptional()
+  notificationEndpoint: string;
+  @Column()
+  @IsOptional()
+  notificationP256dh: string;
+  @Column()
+  @IsOptional()
+  notificationAuth: string;
   @Column({ type: 'date' })
   startingDate: Date;
   @Column({ default: false })
@@ -46,6 +54,4 @@ export class User {
   frequent: boolean;
   @ManyToOne(() => Headquarter)
   headquarter: Headquarter;
-  @ManyToOne(() => Role)
-  role: Role;
 }

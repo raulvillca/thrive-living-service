@@ -1,9 +1,6 @@
-export interface UpdateHeadquarterDto {
-  id: number;
+export interface HeadquarterDto {
   location: string;
   active: boolean;
   companyId: number;
   supervisorId: number;
 }
-
-export type CreateHeadquarterDto = Omit<UpdateHeadquarterDto, 'id'>;

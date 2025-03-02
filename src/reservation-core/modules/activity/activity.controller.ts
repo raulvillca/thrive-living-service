@@ -8,18 +8,15 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ActivityService } from './activity.service';
-import {
-  CreateActivityDto,
-  UpdateActivityDto,
-} from '../../entities/dto/activity.dto';
+import { ActivityDto } from '../../entities/dto/activity.dto';
 
 @Controller('activity')
 export class ActivityController {
   constructor(private readonly activityService: ActivityService) {}
 
   @Post()
-  create(@Body() createActivityDto: CreateActivityDto) {
-    return this.activityService.create(createActivityDto);
+  create(@Body() activityDto: ActivityDto) {
+    return this.activityService.create(activityDto);
   }
 
   @Get()
@@ -28,20 +25,20 @@ export class ActivityController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.activityService.findOne(+id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateActivityDto: UpdateActivityDto,
-  ) {
-    return this.activityService.update(+id, updateActivityDto);
+  update(@Param('id') id: number, @Body() activityDto: ActivityDto) {
+    return this.activityService.update(+id, activityDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.activityService.remove(+id);
+  @Delete(':id/headquarter/:headquarter_id')
+  async remove(
+    @Param('id') id: number,
+    @Param('headquarter_id') headquarterId: number,
+  ) {
+    await this.activityService.remove(+id, headquarterId);
   }
 }

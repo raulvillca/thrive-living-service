@@ -25,17 +25,20 @@ export class TimeGridController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.timeGridService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() timeGridDto: TimeGridDto) {
+  update(@Param('id') id: number, @Body() timeGridDto: TimeGridDto) {
     return this.timeGridService.update(+id, timeGridDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.timeGridService.remove(+id);
+  @Delete(':id/headquarter/:headquarter_id')
+  async remove(
+    @Param('id') id: number,
+    @Param('headquarter_id') headquarterId: number,
+  ) {
+    await this.timeGridService.remove(+id, headquarterId);
   }
 }

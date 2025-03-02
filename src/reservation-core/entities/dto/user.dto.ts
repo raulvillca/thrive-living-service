@@ -9,6 +9,7 @@ export interface UserDto {
   phone?: string;
   goal?: string;
   roleId?: number;
+  headquarterId: number;
 }
 
 export type LoginJWTDto = {
@@ -25,14 +26,23 @@ export type UserResponseDto = Omit<UserDto, 'password' | 'roleId'> & {
   role: string;
 };
 
-export type LoginUserDto = Omit<UserDto, 'name' | 'surname' | 'age' | 'roleId'>;
+export type LoginUserDto = Omit<
+  UserDto,
+  | 'name'
+  | 'surname'
+  | 'age'
+  | 'roleId'
+  | 'birthdate'
+  | 'goal'
+  | 'observation'
+  | 'phone'
+>;
 export type RecoverUserDto = Omit<LoginUserDto, 'password'>;
 export type ResetPasswordDto = LoginUserDto & {
   newPassword: string;
 };
 
-export interface VerifyOtpDto {
+export type VerifyOtpDto = RecoverUserDto & {
   otp: string;
   expireAt: number;
-  email: string;
-}
+};

@@ -1,5 +1,4 @@
-export interface UpdateActivityDto {
-  id: number;
+export interface ActivityDto {
   name: string;
   description: string;
   active: boolean;
@@ -7,5 +6,3 @@ export interface UpdateActivityDto {
   quantity: number;
   headquarterId: number;
 }
-
-export type CreateActivityDto = Omit<UpdateActivityDto, 'id'>;

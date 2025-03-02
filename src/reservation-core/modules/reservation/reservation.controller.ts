@@ -8,18 +8,25 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
-import {
-  CreateReservationDto,
-  UpdateReservationDto,
-} from '../../entities/dto/reservation.dto';
+import { ReservationDto } from '../../entities/dto/reservation.dto';
+import { CommentDto } from '../../entities/dto/comment.dto';
+import { CommentService } from './comment.service';
 
 @Controller('reservation')
 export class ReservationController {
-  constructor(private readonly reservationService: ReservationService) {}
+  constructor(
+    private readonly reservationService: ReservationService,
+    private readonly commentService: CommentService,
+  ) {}
 
   @Post()
-  create(@Body() createReservationDto: CreateReservationDto) {
-    return this.reservationService.create(createReservationDto);
+  create(@Body() reservationDto: ReservationDto) {
+    return this.reservationService.create(reservationDto);
+  }
+
+  @Post('/comment')
+  createComment(@Body() commentDto: CommentDto) {
+    return this.commentService.create(commentDto);
   }
 
   @Get()
@@ -28,20 +35,20 @@ export class ReservationController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.reservationService.findOne(+id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateReservationDto: UpdateReservationDto,
-  ) {
-    return this.reservationService.update(+id, updateReservationDto);
+  update(@Param('id') id: number, @Body() reservationDto: ReservationDto) {
+    return this.reservationService.update(+id, reservationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reservationService.remove(+id);
+  remove(
+    @Param('id') id: number,
+    @Param('headquarter_id') headquarterId: number,
+  ) {
+    return this.reservationService.remove(+id, headquarterId);
   }
 }

@@ -1,8 +1,10 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
+  LoginUserDto,
   RecoverUserDto,
   ResetPasswordDto,
+  UserDto,
   VerifyOtpDto,
 } from '../../entities/dto/user.dto';
 
@@ -10,8 +12,18 @@ import {
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post('login')
+  login(@Body() dto: LoginUserDto) {
+    return this.authService.login(dto);
+  }
+
+  @Post('register')
+  register(@Body() dto: UserDto) {
+    return this.authService.register(dto);
+  }
+
   @Post('recover')
-  async recover(@Body() dto: RecoverUserDto) {
+  recover(@Body() dto: RecoverUserDto) {
     return this.authService.recoverPassword(dto);
   }
 

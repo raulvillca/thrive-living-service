@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
 import { User } from '../../entities/user.entity';
 import { Injectable } from '@nestjs/common';
-import { UserNotFoundException } from '../../commons/user.exception';
+import { EmailNotFoundException, UserNotFoundException } from '../../commons/user.exception';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -20,12 +20,18 @@ export class UserRepository extends Repository<User> {
     return user;
   }
 
-  async findByEmail(email: string): Promise<User | null> {
-    return this.findOne({ where: { email } });
+  async findByEmail(email: string, headquarterId: number): Promise<User> {
+    const user = await this.findOne({
+      where: { email, headquarter: { id: headquarterId } },
+    });
+    if (!user) {
+      throw new EmailNotFoundException(email);
+    }
+    return user;
   }
 
-  async existsByEmail(email: string): Promise<boolean> {
-    const count = await this.count({ where: { email } });
+  async existsByEmail(email: string, headquarterId: number): Promise<boolean> {
+    const count = await this.count({ where: { email, headquarter: { id: headquarterId } } });
     return count > 0;
   }
 }

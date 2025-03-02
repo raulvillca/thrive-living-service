@@ -11,3 +11,9 @@ export class OtpExpiredException extends HttpException {
     super('OTP expiro', HttpStatus.BAD_REQUEST);
   }
 }
+
+export class OtpNotConfirmationException extends HttpException {
+  constructor() {
+    super('No posee confirmacion OTP', HttpStatus.BAD_REQUEST);
+  }
+}

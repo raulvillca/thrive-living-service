@@ -25,17 +25,20 @@ export class DayOfWeekController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.dayOfWeekService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dayOfWeekDto: DayOfWeekDto) {
+  update(@Param('id') id: number, @Body() dayOfWeekDto: DayOfWeekDto) {
     return this.dayOfWeekService.update(+id, dayOfWeekDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: number, @Param('id') headquarterId: number) {
+  @Delete(':id/headquarter/:headquarter_id')
+  remove(
+    @Param('id') id: number,
+    @Param('headquarter_id') headquarterId: number,
+  ) {
     return this.dayOfWeekService.remove(+id, headquarterId);
   }
 }
