@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Activity } from '../../entities/activity.entity';
 import { ActivityNoFoundException } from '../../commons/activity.exception';
 import { DeepPartial } from 'typeorm/common/DeepPartial';

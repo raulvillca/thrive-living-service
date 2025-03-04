@@ -1,6 +1,6 @@
 import { DataSource, Repository } from 'typeorm';
 import { Reservation } from '../../entities/reservation.entity';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { HeadquarterNoFoundException } from '../../commons/headquarter.exception';
 import { DeepPartial } from 'typeorm/common/DeepPartial';
 

@@ -5,24 +5,14 @@ import { OtpService } from '../../infrastructure/otp.service';
 import { HashService } from '../../infrastructure/hash.service';
 import { ImageService } from '../../infrastructure/image.service';
 import { InfrastructureModule } from '../../infrastructure/infrastructure.module';
-import { UserRepository } from '../user/user.repository';
-import { UserRoleRepository } from '../user/user_role.repository';
-import { JwtModule, JwtService } from '@nestjs/jwt';
 import { SecurityModule } from '../../../security/security.module';
-import { JwtStrategy } from '../../../security/jwt-strategy';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [ConfigModule, InfrastructureModule, SecurityModule],
+  imports: [ConfigModule, InfrastructureModule, SecurityModule, UserModule],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    OtpService,
-    HashService,
-    ImageService,
-    UserRepository,
-    UserRoleRepository,
-  ],
+  providers: [AuthService, OtpService, HashService, ImageService],
   exports: [AuthService],
 })
 export class AuthModule {}

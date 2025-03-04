@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { TimeGrid } from '../../entities/time-grid.entity';
 import { TimeGridNoFoundException } from '../../commons/time-grid.exception';
 import { DeepPartial } from 'typeorm/common/DeepPartial';

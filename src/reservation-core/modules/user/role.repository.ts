@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Role } from '../../entities/role.entity';
 import { RoleNoFoundException } from '../../commons/role.exception';
 import { DeepPartial } from 'typeorm/common/DeepPartial';

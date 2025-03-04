@@ -1,6 +1,6 @@
 import { DataSource, Repository } from 'typeorm';
 import { User } from '../../entities/user.entity';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { EmailNotFoundException, UserNotFoundException } from '../../commons/user.exception';
 import { DeepPartial } from 'typeorm/common/DeepPartial';
 

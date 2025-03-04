@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ActivityModule } from './modules/activity/activity.module';
 import { CompanyModule } from './modules/company/company.module';
 import { HeadquarterModule } from './modules/headquarter/headquarter.module';
@@ -17,7 +17,7 @@ import { UserModule } from './modules/user/user.module';
     HeadquarterModule,
     MeetingModule,
     ReservationModule,
-    TimeGridModule,
+    forwardRef(() => TimeGridModule),
     DayOfWeekModule,
     UserModule,
     AuthModule,

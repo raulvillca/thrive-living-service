@@ -96,7 +96,6 @@ export class AuthService {
       email: user.email,
       roles: roles,
     };
-    console.log('🔑 Secret en AuthService:', this.jwtService['secret']);
     return {
       accessToken: this.jwtService.sign(payload),
     };
