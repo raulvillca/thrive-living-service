@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Company } from '../../entities/company.entity';
 import { CompanyNoFoundException } from '../../commons/company.exception';
 import { DeepPartial } from 'typeorm/common/DeepPartial';
@@ -18,6 +18,12 @@ export class CompanyRepository {
       throw new CompanyNoFoundException();
     }
     return company;
+  }
+
+  findAll() {
+    return this.repository.find({
+      where: { active: true },
+    });
   }
 
   create(company: DeepPartial<Company>) {

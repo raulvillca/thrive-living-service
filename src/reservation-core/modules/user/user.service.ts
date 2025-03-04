@@ -7,6 +7,8 @@ import { User } from '../../entities/user.entity';
 import { UserRoleRepository } from './user_role.repository';
 import { UserRoleReallyExistException } from '../../commons/role.exception';
 import { UserRole } from '../../entities/user_roles.entity';
+import { RoleDto, UserRoleDto } from '../../entities/dto/role.dto';
+import { RoleTypeParser } from '../../entities/enums/role-type-parser';
 
 @Injectable()
 export class UserService {
@@ -39,12 +41,35 @@ export class UserService {
     return userCreated;
   }
 
-  findAll() {
-    return `This action returns all activity`;
+  createRol(roleDto: RoleDto) {
+    const role = this.roleRepository.create({
+      roleTitle: roleDto.roleTitle,
+      headquarter: { id: roleDto.headquarterId },
+      type: RoleTypeParser.fromEnumName(roleDto.type),
+    });
+    return this.roleRepository.save(role);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} activity`;
+  createAssignedRolTo(userRoleDto: UserRoleDto) {
+    const userRole = this.userRoleRepository.create({
+      user: { id: userRoleDto.userId },
+      role: { id: userRoleDto.roleId },
+      headquarter: { id: userRoleDto.headquarterId },
+      active: true,
+    });
+    return this.userRoleRepository.save(userRole);
+  }
+
+  findAll(headquarterId: number) {
+    return this.userRepository.find(headquarterId);
+  }
+
+  findOne(id: number, headquarterId: number) {
+    return this.userRepository.findById(id, headquarterId);
+  }
+
+  findRole(id: number, headquarterId: number) {
+    return this.roleRepository.findById(id, headquarterId);
   }
 
   async changeRole(id: number, updateUserDto: UserDto) {

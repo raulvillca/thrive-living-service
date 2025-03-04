@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { HeadquarterService } from './headquarter.service';
 import { HeadquarterDto } from '../../entities/dto/headquarter.dto';
+import { CompanyDemoDto } from '../../entities/dto/company-headquarter.dto';
 
 @Controller('headquarter')
 export class HeadquarterController {
@@ -19,5 +20,10 @@ export class HeadquarterController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.headquarterService.remove(+id);
+  }
+
+  @Post('build')
+  buildDemo(dto: CompanyDemoDto) {
+    return this.headquarterService.createDemo(dto);
   }
 }

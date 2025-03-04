@@ -1,21 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { HeadquarterRepository } from './headquarter.repository';
-import { CompanyRepository } from '../company/company.repository';
 import { Headquarter } from '../../entities/headquarter.entity';
-import { RoleRepository } from '../user/role.repository';
 import { HeadquarterDto } from '../../entities/dto/headquarter.dto';
+import { CompanyService } from '../company/company.service';
+import { UserService } from '../user/user.service';
+import { CompanyDemoDto } from '../../entities/dto/company-headquarter.dto';
 
 @Injectable()
 export class HeadquarterService {
   constructor(
     private readonly headquarterRepository: HeadquarterRepository,
-    private readonly companyRepository: CompanyRepository,
-    private readonly roleRepository: RoleRepository,
+    private readonly companyService: CompanyService,
+    private readonly userService: UserService,
   ) {}
 
   async create(headquarterDto: HeadquarterDto) {
-    const { companyId, supervisorId, ...headquarterData } = headquarterDto;
-    const company = await this.companyRepository.findById(companyId);
+    const { companyId, ...headquarterData } = headquarterDto;
+    //const company = await this.companyRepository.findById(companyId);
+    const company = await this.companyService.findOne(companyId);
     //const supervisor = await this.roleRepository.findById(supervisorId);
 
     const headquarter = this.headquarterRepository.create({
@@ -27,19 +29,49 @@ export class HeadquarterService {
     return this.headquarterRepository.save(headquarter);
   }
 
+  async createDemo(companyDemo: CompanyDemoDto) {
+    const company = await this.companyService.create(companyDemo.company);
+    const headquarter = await this.create({
+      location: companyDemo.location,
+      active: true,
+      companyId: company.id,
+    });
+    const user = await this.userService.create({
+      ...companyDemo.user,
+      headquarterId: headquarter.id,
+    });
+    const role = await this.userService.createRol({
+      type: 'supervisor',
+      headquarterId: headquarter.id,
+      roleTitle: 'Supervisor',
+    });
+    return this.userService.createAssignedRolTo({
+      userId: user.id,
+      roleId: role.id,
+      headquarterId: headquarter.id,
+    });
+  }
+
   async update(id: number, headquarterDto: HeadquarterDto) {
     const { companyId, supervisorId, ...headquarterData } = headquarterDto;
-    const company = await this.companyRepository.findById(companyId);
-    const supervisor = await this.roleRepository.findById(supervisorId, id);
+    const company = await this.companyService.findOne(companyId);
     const headquarter = await this.headquarterRepository.findById(id);
 
-    const updatedHeadquarter = {
-      ...headquarter,
-      ...headquarterData,
-      company,
-      supervisor,
-    } as Headquarter;
-    return this.headquarterRepository.save(updatedHeadquarter);
+    if (supervisorId) {
+      const supervisor = await this.userService.findRole(supervisorId, id);
+      return this.headquarterRepository.save({
+        ...headquarter,
+        ...headquarterData,
+        company,
+        supervisor,
+      });
+    } else {
+      return this.headquarterRepository.save({
+        ...headquarter,
+        ...headquarterData,
+        company,
+      });
+    }
   }
 
   async remove(id: number) {

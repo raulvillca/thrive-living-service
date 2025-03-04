@@ -10,6 +10,6 @@ import { HeadquarterModule } from '../headquarter/headquarter.module';
   imports: [forwardRef(() => HeadquarterModule)],
   controllers: [UserController],
   providers: [UserService, UserRepository, RoleRepository, UserRoleRepository],
-  exports: [UserRepository, UserRoleRepository, RoleRepository],
+  exports: [UserService, UserRepository, UserRoleRepository, RoleRepository],
 })
 export class UserModule {}

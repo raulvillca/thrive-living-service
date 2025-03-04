@@ -1,13 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IsString } from 'class-validator';
 import { Headquarter } from './headquarter.entity';
-
-export enum RoleType {
-  SUPPORT = 'support',
-  SUPERVISOR = 'supervisor',
-  MODERATOR = 'moderator',
-  CLIENT = 'client',
-}
+import { RoleType } from './enums/role-type-parser';
 
 @Entity({ schema: 'reservation_schema', name: 'roles' })
 export class Role {

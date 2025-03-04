@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Headquarter } from '../../entities/headquarter.entity';
 import { HeadquarterNoFoundException } from '../../commons/headquarter.exception';
 import { DeepPartial } from 'typeorm/common/DeepPartial';
@@ -10,6 +10,13 @@ export class HeadquarterRepository {
 
   constructor(private readonly dataSource: DataSource) {
     this.repository = this.dataSource.getRepository(Headquarter);
+  }
+
+  async findAll() {
+    return this.repository.find({
+      where: { active: true },
+      relations: ['company', 'supervisor'],
+    });
   }
 
   async findById(id: number): Promise<Headquarter> {

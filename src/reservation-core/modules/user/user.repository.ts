@@ -15,6 +15,12 @@ export class UserRepository {
     this.repository = this.dataSource.getRepository(User);
   }
 
+  find(headquarterId: number) {
+    return this.repository.find({
+      where: { id: headquarterId },
+    });
+  }
+
   async findById(id: number, headquarterId: number): Promise<User> {
     const user = await this.repository.findOne({
       where: { id, headquarter: { id: headquarterId } },

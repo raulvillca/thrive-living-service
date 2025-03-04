@@ -11,9 +11,14 @@ export class UserController {
     return this.userService.create(userDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get(':id/headquarter/:headquarter_id')
+  findAll(@Param('headquarter_id') headquarterId: number) {
+    return this.userService.findAll(headquarterId);
+  }
+
+  @Get(':id/headquarter/:headquarter_id')
+  findOne(@Param('id') id: number, @Param('headquarter_id') headquarterId: number) {
+    return this.userService.findOne(+id, headquarterId);
   }
 
   @Patch(':id')

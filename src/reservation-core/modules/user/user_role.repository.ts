@@ -52,7 +52,7 @@ export class UserRoleRepository {
     return this.repository.create(entity);
   }
 
-  save(entity: any) {
+  save(entity: UserRole) {
     return this.repository.save(entity);
   }
 }

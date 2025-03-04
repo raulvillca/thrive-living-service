@@ -15,11 +15,11 @@ export class CompanyService {
   }
 
   findAll() {
-    return `This action returns all company`;
+    return this.companyRepository.findAll();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} company`;
+    return this.companyRepository.findById(id);
   }
 
   async update(id: number, companyDto: CompanyDto) {

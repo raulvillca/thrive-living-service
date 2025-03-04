@@ -1,6 +1,10 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
 import { IsBoolean, IsDate, IsEmail, IsOptional, IsString } from 'class-validator';
+
+export enum CompanyType {
+  DEMO = 'demo',
+  PROD = 'prod',
+}
 
 @Entity({ schema: 'reservation_schema', name: 'companies' })
 export class Company {
@@ -39,4 +43,11 @@ export class Company {
   @Column({ nullable: false })
   @IsBoolean()
   active: boolean;
+  @Column()
+  @Column({
+    type: 'enum',
+    enum: CompanyType,
+    default: CompanyType.DEMO,
+  })
+  type: CompanyType;
 }
