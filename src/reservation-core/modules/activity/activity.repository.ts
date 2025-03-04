@@ -1,16 +1,19 @@
 import { DataSource, Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Activity } from '../../entities/activity.entity';
 import { ActivityNoFoundException } from '../../commons/activity.exception';
+import { DeepPartial } from 'typeorm/common/DeepPartial';
 
 @Injectable()
-export class ActivityRepository extends Repository<Activity> {
-  constructor(private dataSource: DataSource) {
-    super(Activity, dataSource.createEntityManager());
+export class ActivityRepository {
+  private repository: Repository<Activity>;
+
+  constructor(private readonly dataSource: DataSource) {
+    this.repository = this.dataSource.getRepository(Activity);
   }
 
   async findById(id: number, headquarterId: number): Promise<Activity> {
-    const activity = await this.findOne({
+    const activity = await this.repository.findOne({
       where: { id, headquarter: { id: headquarterId } },
       relations: ['headquarter'],
     });
@@ -21,8 +24,20 @@ export class ActivityRepository extends Repository<Activity> {
   }
 
   findAll(): Promise<Activity[]> {
-    return this.find({
+    return this.repository.find({
       relations: ['headquarter'],
     });
+  }
+
+  create(activity: DeepPartial<Activity>) {
+    return this.repository.create(activity);
+  }
+
+  save(activity: Activity) {
+    return this.repository.save(activity);
+  }
+
+  remove(activity: Activity) {
+    return this.repository.remove(activity);
   }
 }

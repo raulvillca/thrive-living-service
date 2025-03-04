@@ -13,10 +13,7 @@ export class CommentService {
 
   async create(commentDto: CommentDto) {
     const { reservationId, headquarterId, ...commentData } = commentDto;
-    const reservation = await this.reservationRepository.findById(
-      reservationId,
-      headquarterId,
-    );
+    const reservation = await this.reservationRepository.findById(reservationId, headquarterId);
     const comment = this.commentRepository.create({
       ...commentData,
     });
@@ -33,6 +30,7 @@ export class CommentService {
   }
 
   async update(id: number, commentDto: CommentDto) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { reservationId, headquarterId, ...commentData } = commentDto;
     const comment = await this.commentRepository.findById(id, reservationId);
     const updatedComment = {

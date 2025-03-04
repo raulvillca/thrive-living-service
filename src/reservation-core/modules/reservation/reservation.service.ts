@@ -16,20 +16,14 @@ export class ReservationService {
   ) {}
 
   async create(reservationDto: ReservationDto) {
-    const {
-      headquarterId,
-      clientId,
-      meetingCalendarId,
-      meetingId,
-      ...reservationData
-    } = reservationDto;
-    const headquarter =
-      await this.headquarterRepository.findById(headquarterId);
+    const { headquarterId, clientId, meetingCalendarId, meetingId, ...reservationData } =
+      reservationDto;
+    const headquarter = await this.headquarterRepository.findById(headquarterId);
     const meeting = await this.meetingRepository.findByIdAndMeetingCalendarId(
       meetingId,
       meetingCalendarId,
     );
-    const client = await this.roleRepository.findById(clientId);
+    const client = await this.roleRepository.findById(clientId, headquarterId);
     const reservation = this.reservationRepository.create({
       ...reservationData,
       headquarter,
@@ -48,24 +42,15 @@ export class ReservationService {
   }
 
   async update(id: number, reservationDto: ReservationDto) {
-    const {
-      headquarterId,
-      clientId,
-      meetingCalendarId,
-      meetingId,
-      ...reservationData
-    } = reservationDto;
-    const headquarter =
-      await this.headquarterRepository.findById(headquarterId);
+    const { headquarterId, clientId, meetingCalendarId, meetingId, ...reservationData } =
+      reservationDto;
+    const headquarter = await this.headquarterRepository.findById(headquarterId);
     const meeting = await this.meetingRepository.findByIdAndMeetingCalendarId(
       meetingId,
       meetingCalendarId,
     );
-    const client = await this.roleRepository.findById(clientId);
-    const reservation = await this.reservationRepository.findById(
-      id,
-      headquarterId,
-    );
+    const client = await this.roleRepository.findById(clientId, headquarterId);
+    const reservation = await this.reservationRepository.findById(id, headquarterId);
     const updatedReservation = {
       ...reservation,
       ...reservationData,
@@ -77,10 +62,7 @@ export class ReservationService {
   }
 
   async remove(id: number, headquarterId: number) {
-    const reservation = await this.reservationRepository.findById(
-      id,
-      headquarterId,
-    );
+    const reservation = await this.reservationRepository.findById(id, headquarterId);
     await this.reservationRepository.remove(reservation);
   }
 }

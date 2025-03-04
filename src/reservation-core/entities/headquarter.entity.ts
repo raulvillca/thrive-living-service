@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Supervisor } from './supervisor.entity';
 import { Company } from './company.entity';
 import { IsBoolean, IsString } from 'class-validator';
+import { Role } from './role.entity';
 
 @Entity({ schema: 'reservation_schema', name: 'headquarters' })
 export class Headquarter {
@@ -16,6 +16,6 @@ export class Headquarter {
   active: boolean;
   @ManyToOne(() => Company)
   company: Company;
-  @ManyToOne(() => Supervisor)
-  supervisor: Supervisor;
+  @ManyToOne(() => Role, { nullable: true })
+  supervisor: Role;
 }

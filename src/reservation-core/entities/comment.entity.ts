@@ -1,19 +1,6 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Reservation } from './reservation.entity';
-import {
-  IsDate,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsDate, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 
 @Entity({ schema: 'reservation_schema', name: 'comments' })
 export class Comment {

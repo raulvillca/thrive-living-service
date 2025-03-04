@@ -1,4 +1,6 @@
 export interface CompanyDto {
+  name: string;
+  nameUrl: string;
   initialDate?: Date;
   phone: string;
   description: string;

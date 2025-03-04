@@ -20,13 +20,16 @@ export class RedisClientFactory {
       throw error;
     }
   }
-
-  static build = (): FactoryProvider => {
-    return {
-      provide: 'REDIS_CLIENT',
-      useFactory: (redisClientFactory: RedisClientFactory) =>
-        redisClientFactory.createClient(),
-      inject: [RedisClientFactory],
-    };
-  };
 }
+
+export const RedisFactory: FactoryProvider<Redis> = {
+  provide: 'REDIS_CLIENT',
+  useFactory: (configService: ConfigService) => {
+    return new Redis({
+      host: configService.get<string>('REDIS_HOST', 'localhost'),
+      port: configService.get<number>('REDIS_PORT', 6379),
+      db: configService.get<number>('REDIS_DB', 0),
+    });
+  },
+  inject: [ConfigService],
+};

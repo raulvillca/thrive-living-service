@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { DayOfWeekService } from './day-of-week.service';
 import { DayOfWeekDto } from '../../entities/dto/day-of-week.dto';
 
@@ -35,10 +27,7 @@ export class DayOfWeekController {
   }
 
   @Delete(':id/headquarter/:headquarter_id')
-  remove(
-    @Param('id') id: number,
-    @Param('headquarter_id') headquarterId: number,
-  ) {
+  remove(@Param('id') id: number, @Param('headquarter_id') headquarterId: number) {
     return this.dayOfWeekService.remove(+id, headquarterId);
   }
 }

@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ActivityService } from './activity.service';
 import { ActivityDto } from '../../entities/dto/activity.dto';
 
@@ -35,10 +27,7 @@ export class ActivityController {
   }
 
   @Delete(':id/headquarter/:headquarter_id')
-  async remove(
-    @Param('id') id: number,
-    @Param('headquarter_id') headquarterId: number,
-  ) {
+  async remove(@Param('id') id: number, @Param('headquarter_id') headquarterId: number) {
     await this.activityService.remove(+id, headquarterId);
   }
 }

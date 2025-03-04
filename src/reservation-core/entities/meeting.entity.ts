@@ -1,16 +1,9 @@
-import {
-  Column,
-  Entity,
-  ManyToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn, JoinTable } from 'typeorm';
 import { Activity } from './activity.entity';
 import { TimeGrid } from './time-grid.entity';
 import { MeetingCalendar } from './meeting-calendar.entity';
 import { IsString } from 'class-validator';
-import { Moderator } from './moderator.entity';
-import { JoinTable } from 'typeorm/browser';
+import { Role } from './role.entity';
 
 export enum PlaceType {
   REMOTE = 'remote',
@@ -46,7 +39,7 @@ export class Meeting {
   timeGrid: TimeGrid;
   @ManyToOne(() => MeetingCalendar)
   meetingCalendar: MeetingCalendar;
-  @ManyToMany(() => Moderator, { cascade: true })
+  @ManyToMany(() => Role, { cascade: true })
   @JoinTable()
-  moderators: Moderator[];
+  moderators: Role[];
 }

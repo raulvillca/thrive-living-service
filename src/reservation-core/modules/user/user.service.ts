@@ -104,6 +104,6 @@ export class UserService {
       ...userRole,
       active: false,
     } as UserRole;
-    await this.userRepository.save(updatedUserRole);
+    await this.userRoleRepository.save(updatedUserRole);
   }
 }

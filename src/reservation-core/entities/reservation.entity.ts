@@ -7,19 +7,19 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Client } from './client.entity';
 import { Headquarter } from './headquarter.entity';
 import { Meeting } from './meeting.entity';
 import { IsBoolean, IsDate } from 'class-validator';
 import { Comment } from './comment.entity';
+import { Role } from './role.entity';
 
 @Entity({ schema: 'reservation_schema', name: 'reservations' })
 export class Reservation {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Client)
-  client: Client;
+  @OneToOne(() => Role)
+  client: Role;
   @Column({ default: false })
   @IsBoolean()
   attended: boolean;

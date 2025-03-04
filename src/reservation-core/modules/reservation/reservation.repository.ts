@@ -1,16 +1,19 @@
 import { DataSource, Repository } from 'typeorm';
 import { Reservation } from '../../entities/reservation.entity';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { HeadquarterNoFoundException } from '../../commons/headquarter.exception';
+import { DeepPartial } from 'typeorm/common/DeepPartial';
 
 @Injectable()
-export class ReservationRepository extends Repository<Reservation> {
-  constructor(private dataSource: DataSource) {
-    super(Reservation, dataSource.createEntityManager());
+export class ReservationRepository {
+  private repository: Repository<Reservation>;
+
+  constructor(private readonly dataSource: DataSource) {
+    this.repository = this.dataSource.getRepository(Reservation);
   }
 
   async findById(id: number, headquarterId: number) {
-    const reservation = await this.findOne({
+    const reservation = await this.repository.findOne({
       where: { id, headquarter: { id: headquarterId } },
       relations: ['headquarter', 'meeting', 'comments'],
     });
@@ -26,7 +29,8 @@ export class ReservationRepository extends Repository<Reservation> {
     attended: boolean,
     institutionId: number,
   ): Promise<Reservation[]> {
-    return this.createQueryBuilder('reservation')
+    return this.repository
+      .createQueryBuilder('reservation')
       .leftJoinAndSelect('reservation.client', 'client')
       .leftJoinAndSelect('reservation.headquarter', 'headquarter')
       .leftJoinAndSelect('reservation.meeting', 'meeting')
@@ -39,5 +43,17 @@ export class ReservationRepository extends Repository<Reservation> {
       .andWhere('headquarter.institutionId = :institutionId', { institutionId })
       .orderBy('reservation.fromDate', 'ASC')
       .getMany();
+  }
+
+  create(reservation: DeepPartial<Reservation>) {
+    return this.repository.create(reservation);
+  }
+
+  save(reservation: Reservation) {
+    return this.repository.save(reservation);
+  }
+
+  remove(reservation: Reservation) {
+    return this.repository.remove(reservation);
   }
 }

@@ -4,20 +4,24 @@ import { CompanyModule } from './modules/company/company.module';
 import { HeadquarterModule } from './modules/headquarter/headquarter.module';
 import { MeetingModule } from './modules/meeting/meeting.module';
 import { ReservationModule } from './modules/reservation/reservation.module';
-import { ScheduleTableModule } from './modules/schedule-table/schedule-table.module';
-import { ConfigModule } from '@nestjs/config';
-import { ImageService } from './infrastructure/image.service';
+import { TimeGridModule } from './modules/time-grid/time-grid.module';
+import { DayOfWeekModule } from './modules/day-of-week/day-of-week.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
-  exports: [
+  exports: [ActivityModule, CompanyModule, HeadquarterModule, MeetingModule, ReservationModule],
+  imports: [
     ActivityModule,
     CompanyModule,
     HeadquarterModule,
     MeetingModule,
     ReservationModule,
-    ScheduleTableModule,
+    TimeGridModule,
+    DayOfWeekModule,
+    UserModule,
+    AuthModule,
   ],
-  imports: [ConfigModule.forRoot()],
-  providers: [ImageService],
+  providers: [],
 })
 export class ReservationCoreModule {}

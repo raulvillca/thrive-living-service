@@ -15,6 +15,8 @@ import {
 } from '../../commons/user.exception';
 import { HashService } from '../../infrastructure/hash.service';
 import { User } from '../../entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import { UserRoleRepository } from '../user/user_role.repository';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +25,8 @@ export class AuthService {
     private readonly otpService: OtpService,
     private readonly hashService: HashService,
     private readonly imageService: ImageService,
+    private readonly jwtService: JwtService,
+    private readonly userRoleRepository: UserRoleRepository,
   ) {}
 
   async login(dto: LoginUserDto) {
@@ -31,7 +35,7 @@ export class AuthService {
     if (!validatePassword) {
       throw new PasswordMismatchingException(dto.email);
     }
-    return user;
+    return this.generateToken(user);
   }
 
   async register(dto: UserDto) {
@@ -45,6 +49,7 @@ export class AuthService {
       password: hashedPassword,
     });
 
+    //TODO enviar mail de registro.
     return this.userRepository.save(user);
   }
 
@@ -81,5 +86,33 @@ export class AuthService {
     await this.userRepository.save(resetUser);
     //TODO enviar mail de que se reseteo el password
     return Promise.resolve(true);
+  }
+
+  private async generateToken(user: User) {
+    const roles = await this.userRoleRepository.findRolesByUserId(user.id, user.headquarter.id);
+    const payload = {
+      id: user.id,
+      headquarterId: user.headquarter.id,
+      email: user.email,
+      roles: roles,
+    };
+    console.log('🔑 Secret en AuthService:', this.jwtService['secret']);
+    return {
+      accessToken: this.jwtService.sign(payload),
+    };
+  }
+
+  async validateToken(authToken: any) {
+    console.log(`AuthToken ${authToken}`);
+    return Promise.resolve('');
+  }
+
+  async validateUser(email: string, password: string, headquarterId: number) {
+    const user = await this.userRepository.findByEmail(email, headquarterId);
+    const validatePassword = await this.hashService.compare(password, user.password);
+    if (!validatePassword) {
+      throw new PasswordMismatchingException(email);
+    }
+    return user;
   }
 }

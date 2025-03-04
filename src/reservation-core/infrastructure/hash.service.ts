@@ -7,10 +7,10 @@ export class HashService {
 
   async hash(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(this.saltRounds);
-    return bcrypt.hash(password, salt);
+    return Promise.resolve(bcrypt.hash(password, salt));
   }
 
-  async compare(password: string, hash: string): Promise<boolean> {
+  compare(password: string, hash: string) {
     return bcrypt.compare(password, hash);
   }
 }

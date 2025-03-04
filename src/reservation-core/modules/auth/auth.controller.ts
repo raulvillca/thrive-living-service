@@ -7,7 +7,9 @@ import {
   UserDto,
   VerifyOtpDto,
 } from '../../entities/dto/user.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -17,6 +19,7 @@ export class AuthController {
     return this.authService.login(dto);
   }
 
+  @ApiOperation({ summary: 'Crea un nuevo usuario' })
   @Post('register')
   register(@Body() dto: UserDto) {
     return this.authService.register(dto);

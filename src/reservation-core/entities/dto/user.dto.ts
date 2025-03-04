@@ -4,7 +4,6 @@ export interface UserDto {
   birthdate: string;
   email: string;
   password: string;
-  age: string;
   observation?: string;
   phone?: string;
   goal?: string;
@@ -28,14 +27,7 @@ export type UserResponseDto = Omit<UserDto, 'password' | 'roleId'> & {
 
 export type LoginUserDto = Omit<
   UserDto,
-  | 'name'
-  | 'surname'
-  | 'age'
-  | 'roleId'
-  | 'birthdate'
-  | 'goal'
-  | 'observation'
-  | 'phone'
+  'name' | 'surname' | 'age' | 'roleId' | 'birthdate' | 'goal' | 'observation' | 'phone'
 >;
 export type RecoverUserDto = Omit<LoginUserDto, 'password'>;
 export type ResetPasswordDto = LoginUserDto & {

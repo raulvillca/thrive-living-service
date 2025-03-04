@@ -38,15 +38,15 @@ export class User {
   @Column({ nullable: true })
   @IsOptional()
   notificationToken?: string;
-  @Column()
+  @Column({ nullable: true })
   @IsOptional()
-  notificationEndpoint: string;
-  @Column()
+  notificationEndpoint?: string;
+  @Column({ nullable: true })
   @IsOptional()
-  notificationP256dh: string;
-  @Column()
+  notificationP256dh?: string;
+  @Column({ nullable: true })
   @IsOptional()
-  notificationAuth: string;
+  notificationAuth?: string;
   @Column({ type: 'date' })
   startingDate: Date;
   @Column({ default: false })

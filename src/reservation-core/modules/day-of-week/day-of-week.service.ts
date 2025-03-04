@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DayOfWeekDto } from '../../entities/dto/day-of-week.dto';
 import { DayOfWeekRepository } from './day-of-week.repository';
 import { HeadquarterRepository } from '../headquarter/headquarter.repository';
-import { DayOfWeek } from '../../entities/day-of-week';
+import { DayOfWeek } from '../../entities/day-of-week.entity';
 
 @Injectable()
 export class DayOfWeekService {
@@ -12,8 +12,7 @@ export class DayOfWeekService {
   ) {}
   async create(dayOfWeekDto: DayOfWeekDto) {
     const { headquarterId, ...dayOfWeekData } = dayOfWeekDto;
-    const headquarter =
-      await this.headquarterRepository.findById(headquarterId);
+    const headquarter = await this.headquarterRepository.findById(headquarterId);
     const dayOfWeek = this.dayOfWeekRepository.create({
       ...dayOfWeekData,
       headquarter,
@@ -31,12 +30,8 @@ export class DayOfWeekService {
 
   async update(id: number, dayOfWeekDto: DayOfWeekDto) {
     const { headquarterId, ...dayOfWeekData } = dayOfWeekDto;
-    const headquarter =
-      await this.headquarterRepository.findById(headquarterId);
-    const dayOfWeek = await this.dayOfWeekRepository.findById(
-      id,
-      headquarterId,
-    );
+    const headquarter = await this.headquarterRepository.findById(headquarterId);
+    const dayOfWeek = await this.dayOfWeekRepository.findById(id, headquarterId);
     const updatedDayOfWeek = {
       ...dayOfWeek,
       ...dayOfWeekData,
@@ -46,10 +41,7 @@ export class DayOfWeekService {
   }
 
   async remove(id: number, headquarterId: number) {
-    const dayOfWeek = await this.dayOfWeekRepository.findById(
-      id,
-      headquarterId,
-    );
+    const dayOfWeek = await this.dayOfWeekRepository.findById(id, headquarterId);
     return await this.dayOfWeekRepository.remove(dayOfWeek);
   }
 }

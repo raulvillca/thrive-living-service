@@ -1,14 +1,9 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CompanyDto } from '../../entities/dto/company.dto';
+import { SecurityGuard } from '../../../security/security.guard';
+import { RolesGuard } from '../../../security/roles.guard';
+import { Roles } from '../../../security/roles.decorator';
 
 @Controller('company')
 export class CompanyController {
@@ -20,6 +15,8 @@ export class CompanyController {
   }
 
   @Get()
+  @UseGuards(RolesGuard)
+  @Roles('client')
   findAll() {
     return this.companyService.findAll();
   }

@@ -12,8 +12,7 @@ export class ActivityService {
   ) {}
   async create(activityDto: ActivityDto): Promise<Activity> {
     const { headquarterId, ...activityData } = activityDto;
-    const headquarter =
-      await this.headquarterRepository.findById(headquarterId);
+    const headquarter = await this.headquarterRepository.findById(headquarterId);
 
     const newActivity = this.activityRepository.create({
       ...activityData,
@@ -32,8 +31,7 @@ export class ActivityService {
 
   async update(id: number, activityDto: ActivityDto) {
     const { headquarterId, ...activityData } = activityDto;
-    const headquarter =
-      await this.headquarterRepository.findById(headquarterId);
+    const headquarter = await this.headquarterRepository.findById(headquarterId);
     const activity = await this.activityRepository.findById(id, headquarterId);
     const updatedActivity = {
       ...activity,

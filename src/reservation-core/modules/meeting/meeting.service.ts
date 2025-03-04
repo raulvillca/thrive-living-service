@@ -24,14 +24,9 @@ export class MeetingService {
   ) {}
 
   async createMeetingCalendar(meetingCalendarDto: MeetingCalendarDto) {
-    const { dayOfWeekId, meetingIds, headquarterId, ...meetingCalendarData } =
-      meetingCalendarDto;
-    const dayOfWeek = await this.dayOfWeekRepository.findById(
-      dayOfWeekId,
-      headquarterId,
-    );
-    const headquarter =
-      await this.headquarterRepository.findById(headquarterId);
+    const { dayOfWeekId, meetingIds, headquarterId, ...meetingCalendarData } = meetingCalendarDto;
+    const dayOfWeek = await this.dayOfWeekRepository.findById(dayOfWeekId, headquarterId);
+    const headquarter = await this.headquarterRepository.findById(headquarterId);
     const meetings = await this.meetingRepository.findBy({
       id: In(meetingIds),
     });
@@ -45,21 +40,13 @@ export class MeetingService {
   }
 
   async create(meetingDto: MeetingDto, headquarterId: number) {
-    const { meetingCalendarId, activityId, timeGridId, placeType, place } =
-      meetingDto;
-    const meetingCalendar =
-      await this.meetingCalendarRepository.findByIdAndHeadquarterId(
-        meetingCalendarId,
-        headquarterId,
-      );
-    const activity = await this.activityRepository.findById(
-      activityId,
+    const { meetingCalendarId, activityId, timeGridId, placeType, place } = meetingDto;
+    const meetingCalendar = await this.meetingCalendarRepository.findByIdAndHeadquarterId(
+      meetingCalendarId,
       headquarterId,
     );
-    const timeGrid = await this.timeGridRepository.findById(
-      timeGridId,
-      headquarterId,
-    );
+    const activity = await this.activityRepository.findById(activityId, headquarterId);
+    const timeGrid = await this.timeGridRepository.findById(timeGridId, headquarterId);
     const meeting = this.meetingRepository.create({
       placeType: PlaceTypeConverter.parse(placeType),
       place,
@@ -79,31 +66,18 @@ export class MeetingService {
   }
 
   async update(id: number, headquarterId: number, meetingDto: MeetingDto) {
-    const {
-      meetingCalendarId,
-      activityId,
-      timeGridId,
-      placeType,
-      place,
-      moderatorIds,
-    } = meetingDto;
+    const { meetingCalendarId, activityId, timeGridId, placeType, place, moderatorIds } =
+      meetingDto;
     const meeting = await this.meetingRepository.findByIdAndMeetingCalendarId(
       id,
       meetingCalendarId,
     );
-    const activity = await this.activityRepository.findById(
-      activityId,
+    const activity = await this.activityRepository.findById(activityId, headquarterId);
+    const timeGrid = await this.timeGridRepository.findById(timeGridId, headquarterId);
+    const meetingCalendar = await this.meetingCalendarRepository.findByIdAndHeadquarterId(
+      meetingCalendarId,
       headquarterId,
     );
-    const timeGrid = await this.timeGridRepository.findById(
-      timeGridId,
-      headquarterId,
-    );
-    const meetingCalendar =
-      await this.meetingCalendarRepository.findByIdAndHeadquarterId(
-        meetingCalendarId,
-        headquarterId,
-      );
     const moderators = await this.roleRepository.findBy({
       id: In(moderatorIds),
     });

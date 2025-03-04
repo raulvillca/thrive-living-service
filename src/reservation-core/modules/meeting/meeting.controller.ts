@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { MeetingService } from './meeting.service';
 import { MeetingDto } from '../../entities/dto/meeting.dto';
 
@@ -15,10 +7,7 @@ export class MeetingController {
   constructor(private readonly meetingService: MeetingService) {}
 
   @Post(':headquarter_id')
-  create(
-    @Param('headquarter_id') headquarterId: number,
-    @Body() meetingDto: MeetingDto,
-  ) {
+  create(@Param('headquarter_id') headquarterId: number, @Body() meetingDto: MeetingDto) {
     return this.meetingService.create(meetingDto, headquarterId);
   }
 

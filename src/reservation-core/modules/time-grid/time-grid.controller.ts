@@ -1,16 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TimeGridService } from './time-grid.service';
 import { TimeGridDto } from '../../entities/dto/time-grid.dto';
 
-@Controller('meeting')
+@Controller('time-grid')
 export class TimeGridController {
   constructor(private readonly timeGridService: TimeGridService) {}
 
@@ -35,10 +27,7 @@ export class TimeGridController {
   }
 
   @Delete(':id/headquarter/:headquarter_id')
-  async remove(
-    @Param('id') id: number,
-    @Param('headquarter_id') headquarterId: number,
-  ) {
+  async remove(@Param('id') id: number, @Param('headquarter_id') headquarterId: number) {
     await this.timeGridService.remove(+id, headquarterId);
   }
 }

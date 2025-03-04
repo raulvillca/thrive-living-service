@@ -13,12 +13,8 @@ export class TimeGridService {
   ) {}
   async create(timeGridDto: TimeGridDto) {
     const { headquarterId, dayOfWeekId, ...timeGridData } = timeGridDto;
-    const headquarter =
-      await this.headquarterRepository.findById(headquarterId);
-    const dayOfWeek = await this.dayOfWeekRepository.findById(
-      dayOfWeekId,
-      headquarterId,
-    );
+    const headquarter = await this.headquarterRepository.findById(headquarterId);
+    const dayOfWeek = await this.dayOfWeekRepository.findById(dayOfWeekId, headquarterId);
     const timeGrid = this.timeGridRepository.create({
       ...timeGridData,
       headquarter,
@@ -37,12 +33,8 @@ export class TimeGridService {
 
   async update(id: number, timeGridDto: TimeGridDto) {
     const { headquarterId, dayOfWeekId, ...timeGridData } = timeGridDto;
-    const headquarter =
-      await this.headquarterRepository.findById(headquarterId);
-    const dayOfWeek = await this.dayOfWeekRepository.findById(
-      dayOfWeekId,
-      headquarterId,
-    );
+    const headquarter = await this.headquarterRepository.findById(headquarterId);
+    const dayOfWeek = await this.dayOfWeekRepository.findById(dayOfWeekId, headquarterId);
     const timeGrid = await this.timeGridRepository.findById(id, headquarterId);
     timeGrid.initialTime = new Date(timeGridData.initialTime);
     timeGrid.endTime = new Date(timeGridData.endTime);

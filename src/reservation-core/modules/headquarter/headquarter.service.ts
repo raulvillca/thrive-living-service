@@ -16,10 +16,10 @@ export class HeadquarterService {
   async create(headquarterDto: HeadquarterDto) {
     const { companyId, supervisorId, ...headquarterData } = headquarterDto;
     const company = await this.companyRepository.findById(companyId);
-    const supervisor = await this.roleRepository.findById(supervisorId);
+    //const supervisor = await this.roleRepository.findById(supervisorId);
 
     const headquarter = this.headquarterRepository.create({
-      supervisor,
+      //supervisor,
       company,
       active: true,
       location: headquarterData.location,
@@ -30,7 +30,7 @@ export class HeadquarterService {
   async update(id: number, headquarterDto: HeadquarterDto) {
     const { companyId, supervisorId, ...headquarterData } = headquarterDto;
     const company = await this.companyRepository.findById(companyId);
-    const supervisor = await this.roleRepository.findById(supervisorId);
+    const supervisor = await this.roleRepository.findById(supervisorId, id);
     const headquarter = await this.headquarterRepository.findById(id);
 
     const updatedHeadquarter = {
